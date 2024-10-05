@@ -5,8 +5,8 @@ interface IRepository extends Document {
   users: string[];
   lastCommitSha: string;
   addedAt: Date;
-  createdAt: Date; // Добавляем createdAt
-  updatedAt: Date; // Добавляем updatedAt
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const RepositorySchema = new Schema<IRepository>(
@@ -16,6 +16,6 @@ const RepositorySchema = new Schema<IRepository>(
     lastCommitSha: { type: String, required: false, default: "" },
   },
   { timestamps: true }
-); // Добавляем timestamps для автоматического создания полей createdAt и updatedAt
+);
 
 export const Repository = model<IRepository>("Repository", RepositorySchema);

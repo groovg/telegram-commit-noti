@@ -50,7 +50,6 @@ export const checkRepositories = async () => {
           const latestCommit = commits[0];
           const commitDate = new Date(latestCommit.commit.author?.date || "");
 
-          // Проверяем, был ли коммит сделан после добавления репозитория
           if (
             commitDate > new Date(repo.createdAt) &&
             latestCommit.sha !== repo.lastCommitSha
