@@ -19,3 +19,5 @@
 {"level":"info","message":"Connected to MongoDB","timestamp":"2024-10-05T22:33:44.244Z"}
 {"level":"info","message":"Server is running on port 3000","timestamp":"2024-10-05T22:41:59.331Z"}
 {"level":"info","message":"Connected to MongoDB","timestamp":"2024-10-05T22:41:59.886Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2024-10-05T22:47:03.270Z"}
+{"level":"info","message":"Connected to MongoDB","timestamp":"2024-10-05T22:47:03.825Z"}
