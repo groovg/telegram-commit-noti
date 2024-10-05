@@ -62,9 +62,9 @@ export const checkRepositories = async () => {
 Автор: ${latestCommit.commit.author?.name}
 Время: ${moment(commitDate).utc().format("DD.MM.YYYY HH:mm:ss")} UTC
 Сообщение: ${latestCommit.commit.message}
-Ссылка: [${latestCommit.sha}](https://github.com/${repo.fullName}/commit/${
+Ссылка: <a href="https://github.com/${repo.fullName}/commit/${
               latestCommit.sha
-            })`;
+            }">${latestCommit.sha}</a>`;
 
             for (const userId of repo.users) {
               await sendNotification(userId, message);
