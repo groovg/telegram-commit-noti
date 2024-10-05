@@ -7,11 +7,6 @@ import moment from "moment-timezone";
 
 const bot = new TelegramBot(config.telegramBotToken, { polling: true });
 
-const formatCommitTime = (message: Message, commitTime: string): string => {
-  const userTimezone = message.chat.timezone || "UTC";
-  return moment(commitTime).tz(userTimezone).format("YYYY-MM-DD HH:mm:ss");
-};
-
 export const initTelegramBot = () => {
   bot.onText(/\/start/, async (msg) => {
     const chatId = msg.chat.id;
@@ -117,23 +112,10 @@ export const initTelegramBot = () => {
   });
 };
 
-export const sendNotification = async (
-  msg: Message,
-  fullName: string,
-  author: string,
-  commitTime: string,
-  commitUrl: string,
-  commitMessage: string
-) => {
+export const sendNotification = async (chatId: string, message: string) => {
   try {
-    const formattedTime = formatCommitTime(msg, commitTime);
-    const message = `Новый коммит в репозитории ${fullName}:
-Автор: ${author}
-Время: ${formattedTime}
-Сообщение: ${commitMessage}
-Ссылка: ${commitUrl}`;
-    await bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
+    await bot.sendMessage(chatId, message, { parse_mode: "HTML" });
   } catch (error) {
-    logger.error("Error sending notification", { error, chatId: msg.chat.id });
+    logger.error("Error sending notification", { error, chatId });
   }
 };
