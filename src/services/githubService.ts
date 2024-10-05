@@ -3,6 +3,7 @@ import { config } from "../config/config";
 import { Repository } from "../models/Repository";
 import { sendNotification } from "./telegramService";
 import { logger } from "../utils/logger";
+import moment from "moment";
 
 const octokit = new Octokit({ auth: config.githubToken });
 
@@ -45,19 +46,29 @@ export const checkRepositories = async () => {
           per_page: 1,
         });
 
-        if (commits.length > 0 && commits[0].sha !== repo.lastCommitSha) {
+        if (commits.length > 0) {
           const latestCommit = commits[0];
-          repo.lastCommitSha = latestCommit.sha;
-          await repo.save();
+          const commitDate = new Date(latestCommit.commit.author?.date || "");
 
-          const message = `Новый коммит в репозитории ${repo.fullName}:
+          // Проверяем, был ли коммит сделан после добавления репозитория
+          if (
+            commitDate > new Date(repo.createdAt) &&
+            latestCommit.sha !== repo.lastCommitSha
+          ) {
+            repo.lastCommitSha = latestCommit.sha;
+            await repo.save();
+
+            const message = `Новый коммит в репозитории ${repo.fullName}:
 Автор: ${latestCommit.commit.author?.name}
-Время: ${latestCommit.commit.author?.date}
+Время: ${moment(commitDate).utc().format("DD.MM.YYYY HH:mm:ss")} UTC
 Сообщение: ${latestCommit.commit.message}
-Ссылка: ${latestCommit.html_url}`;
+Ссылка: [${latestCommit.sha}](https://github.com/${repo.fullName}/commit/${
+              latestCommit.sha
+            })`;
 
-          for (const userId of repo.users) {
-            await sendNotification(userId, message);
+            for (const userId of repo.users) {
+              await sendNotification(userId, message);
+            }
           }
         }
       } catch (error) {

@@ -54,6 +54,7 @@ export const initTelegramBot = () => {
           fullName,
           users: [chatId.toString()],
           lastCommitSha: "",
+          addedAt: new Date(),
         });
       } else if (!repo.users.includes(chatId.toString())) {
         repo.users.push(chatId.toString());
