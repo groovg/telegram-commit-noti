@@ -4,7 +4,8 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@octokit/rest": "^19.0.7",
